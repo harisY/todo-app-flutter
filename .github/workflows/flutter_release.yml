@@ -29,6 +29,11 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Create local.properties
+        run: |
+          echo "flutter.sdk=${{ env.FLUTTER_ROOT }}" > android/local.properties
+          echo "sdk.dir=/usr/local/Caches/android-sdk" >> android/local.properties
+
       - name: Build APK (Release)
         run: flutter build apk --release
 
