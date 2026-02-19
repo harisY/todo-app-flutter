@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 
 import 'injection_container.dart';
 import 'presentation/providers/theme/theme_notifier.dart';
-import 'presentation/providers/todo/todo_notifier.dart';
-import 'presentation/providers/category/category_notifier.dart';
 import 'presentation/screens/home_screen.dart';
 
 void main() async {
@@ -32,7 +30,9 @@ class TodoApp extends StatelessWidget {
           return MaterialApp(
             title: 'Todo App',
             debugShowCheckedModeBanner: false,
-            themeMode: themeNotifier.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            themeMode: themeNotifier.isDarkMode
+                ? ThemeMode.dark
+                : ThemeMode.light,
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
                 seedColor: Colors.blue,
@@ -41,7 +41,9 @@ class TodoApp extends StatelessWidget {
               useMaterial3: true,
               cardTheme: CardThemeData(
                 elevation: 2,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
             darkTheme: ThemeData(
@@ -52,7 +54,9 @@ class TodoApp extends StatelessWidget {
               useMaterial3: true,
               cardTheme: CardThemeData(
                 elevation: 2,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
             home: const HomeScreen(),

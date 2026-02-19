@@ -80,31 +80,40 @@ class _AddEditTodoDialogState extends State<AddEditTodoDialog> {
 
                 // Category Selector - use ID as value to avoid equality issues
                 DropdownButtonFormField<String>(
-                  value: widget.selectedCategory.id,
+                  initialValue: widget.selectedCategory.id,
                   decoration: const InputDecoration(
                     labelText: 'Category',
                     border: OutlineInputBorder(),
                   ),
-                  items: allCategories.map((cat) => DropdownMenuItem(
-                    value: cat.id,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: BoxDecoration(
-                            color: Color(int.parse(cat.color, radix: 16) + 0xFF000000),
-                            shape: BoxShape.circle,
+                  items: allCategories
+                      .map(
+                        (cat) => DropdownMenuItem(
+                          value: cat.id,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 16,
+                                height: 16,
+                                decoration: BoxDecoration(
+                                  color: Color(
+                                    int.parse(cat.color, radix: 16) +
+                                        0xFF000000,
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(cat.name),
+                            ],
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Text(cat.name),
-                      ],
-                    ),
-                  )).toList(),
+                      )
+                      .toList(),
                   onChanged: (val) {
                     if (val != null) {
-                      final category = allCategories.firstWhere((c) => c.id == val);
+                      final category = allCategories.firstWhere(
+                        (c) => c.id == val,
+                      );
                       widget.onCategoryChanged(category);
                     }
                   },
@@ -118,23 +127,30 @@ class _AddEditTodoDialogState extends State<AddEditTodoDialog> {
                     labelText: 'Priority',
                     border: OutlineInputBorder(),
                   ),
-                  items: Priority.values.map((priority) => DropdownMenuItem(
-                    value: priority,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 16,
-                          height: 16,
-                          decoration: BoxDecoration(
-                            color: Color(int.parse(priority.colorCode, radix: 16) + 0xFF000000),
-                            shape: BoxShape.circle,
+                  items: Priority.values
+                      .map(
+                        (priority) => DropdownMenuItem(
+                          value: priority,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 16,
+                                height: 16,
+                                decoration: BoxDecoration(
+                                  color: Color(
+                                    int.parse(priority.colorCode, radix: 16) +
+                                        0xFF000000,
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(priority.label),
+                            ],
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Text(priority.label),
-                      ],
-                    ),
-                  )).toList(),
+                      )
+                      .toList(),
                   onChanged: (val) => widget.onPriorityChanged(val!),
                 ),
                 const SizedBox(height: 16),
@@ -163,7 +179,10 @@ class _AddEditTodoDialogState extends State<AddEditTodoDialog> {
                 const SizedBox(height: 16),
 
                 // SubTasks
-                const Text('Sub-tasks', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(
+                  'Sub-tasks',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -173,7 +192,10 @@ class _AddEditTodoDialogState extends State<AddEditTodoDialog> {
                         decoration: const InputDecoration(
                           hintText: 'Add sub-task',
                           border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
                         ),
                         onSubmitted: (_) => widget.onAddSubTask(),
                       ),
@@ -187,34 +209,40 @@ class _AddEditTodoDialogState extends State<AddEditTodoDialog> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                ...widget.subTasks.map((subTask) => ListTile(
-                  dense: true,
-                  contentPadding: EdgeInsets.zero,
-                  leading: Icon(
-                    subTask.isCompleted ? Icons.check_circle : Icons.check_circle_outline,
-                    size: 20,
-                    color: subTask.isCompleted ? Colors.green : null,
-                  ),
-                  title: Text(
-                    subTask.title,
-                    style: TextStyle(
-                      decoration: subTask.isCompleted ? TextDecoration.lineThrough : null,
-                      color: subTask.isCompleted ? Colors.grey : null,
+                ...widget.subTasks.map(
+                  (subTask) => ListTile(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    leading: Icon(
+                      subTask.isCompleted
+                          ? Icons.check_circle
+                          : Icons.check_circle_outline,
+                      size: 20,
+                      color: subTask.isCompleted ? Colors.green : null,
+                    ),
+                    title: Text(
+                      subTask.title,
+                      style: TextStyle(
+                        decoration: subTask.isCompleted
+                            ? TextDecoration.lineThrough
+                            : null,
+                        color: subTask.isCompleted ? Colors.grey : null,
+                      ),
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (!widget.isEditing)
+                          IconButton(
+                            icon: const Icon(Icons.close, size: 20),
+                            onPressed: () => widget.onRemoveSubTask(subTask.id),
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          ),
+                      ],
                     ),
                   ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (!widget.isEditing)
-                        IconButton(
-                          icon: const Icon(Icons.close, size: 20),
-                          onPressed: () => widget.onRemoveSubTask(subTask.id),
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                        ),
-                    ],
-                  ),
-                )),
+                ),
               ],
             ),
           ),
